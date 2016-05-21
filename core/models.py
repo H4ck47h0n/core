@@ -8,7 +8,7 @@
      password  = db.Column(db.String(120))
      like      = db.Column(db.String(1200))
      dislike   = db.Column(db.String(1200))
-     exiting   = db.Column(db.Interger)
+     exiting   = db.Column(db.String)
      def __init__(self,username,password,exiting):
          self.username  =  username
          self.password  =  password

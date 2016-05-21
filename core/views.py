@@ -44,6 +44,44 @@ def logout():
         "status":"success",
         "message":"logout success"
     })
-
-
+@app.route('/account/<username>',methods=["GET","POST","DELETE","PUT"])
+@flask_login.login_required
+def account(username):
+    usernames = [user.name for user in db.User.query.all()]
+    if request.method == "POST":
+        data = request.get_json()
+        if data['name'] not in usernames:
+            age       = data['profile']['age']
+            sex       = data['profile']['sex']
+            interests = data['profile']['interests']
+            exiting = ""
+            for item in interests:
+                exiting + str(interests[item])
+            user = User(username=data['name'],password=data['password'],interests=exiting,age=age,sex=sex)
+            db.session.add(user)
+            db.session.commit()
+            return jsonfy({
+                "status":"success",
+                "message":"Creat Account Success"
+            })
+        else:
+            return jsonfy({
+                "status":"false",
+                "message":"The account already exists"
+            })
+    elif request.method == "DELETE":
+        data = request.get_json()
+        if data['name'] in username:
+            user = db.User.query.filter_by(username=data['name'])
+            db.session.delete(user)
+            db.session.commit()
+            return jsonfy({
+                "status":"success",
+                "message":"Delete the user success"
+            })
+        else:
+            return jsonfy({
+                "status":"false",
+                "message":"The account didn't exist"
+            })
 #app.run(host="0.0.0.0",debug=True)

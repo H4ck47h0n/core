@@ -2,7 +2,7 @@
 
 
 def die(arg):
-	print('Runtime error:',arg)
+	print('Runtime error:'+arg)
 	raise Exception
 
 
@@ -43,21 +43,25 @@ def getMatchedUser(db,uid):
 	attrUser = getUserAttr(db,uid)
 	likeDislike = getUserLikeDislike(db,uid)
 	UnseenUsers = getUnSeenUsers(likeDislike[0],likeDislike[1])
-
+	for i in range(len(UnseenUsers)):
+		UnseenUsers[i] = (UnseenUsers[i],calcAttrSimilarity(attrUser,getUserAttr(db,UnseenUsers[i]),weight))
+	UnseenUsers = tuple(sorted(UnseenUsers, key=lambda x: x[1]))
+	return(UnseenUsers[-1])
 
 
 def test1():
-	a = 0b1111101111
-	b = 0b1111111111
+	a = "1010101010"
+	b = "10101010111"
 	weight = (10,10,10,10,10,10,10,10,10,10)
-	print(calcAttrSimilarity(a,b,10,weight))
+	print(calcAttrSimilarity(a,b,weight))
 
 def test2():
 	a = [('xiaoming',20),('zhangsan',40),('nidie',10)]
-	print(sorted(a,key=lambda x : x[1]))
+	print(tuple(sorted(a,key=lambda x : x[1]))[-1])
 
 def test3():
 	like = '000204060899'
 	dislike = '010798'
 	print(getUnSeenUsers(like,dislike))
-test3()
+
+test2()

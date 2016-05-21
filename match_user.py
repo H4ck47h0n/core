@@ -7,6 +7,7 @@ def die(arg):
 
 
 def calcAttrSimilarity(attr1, attr2, weight):
+	if attr1 == '' or attr2 == '' return 0
 	if len(attr1) != len(attr2): die('len attr1 and len attr2 mismatch.')
 	if len(attr1) != len(weight): die('len attr and len weight mismatch.')
 	nsame = 0	
@@ -50,7 +51,7 @@ def getMatchedUser(db,uid):
 
 
 def test1():
-	a = "1010101010"
+	a = "10101010100"
 	b = "10101010111"
 	weight = (10,10,10,10,10,10,10,10,10,10)
 	print(calcAttrSimilarity(a,b,weight))
